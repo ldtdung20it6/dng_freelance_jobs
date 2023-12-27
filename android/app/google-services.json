@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "796978196424",
+    "project_id": "dngfreelancejobs",
+    "storage_bucket": "dngfreelancejobs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796978196424:android:af324794ed7c5e2e71dafd",
+        "android_client_info": {
+          "package_name": "com.example.dng_freelance_jobs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB9SsedXcVdOEZUdo1TcGWNg9vhIi6c3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
