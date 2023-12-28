@@ -19,6 +19,7 @@ class ProfilePage extends GetWidget<ProfileController> {
   var MY_APPLICATION = 'my_application';
   var SAVED = 'saved';
   var CORPORATION = 'corporation';
+  var MENU_ROLE = 'menu_role';
 
   textType(TYPE) {
     if (TYPE == MY_INFO) {
@@ -71,9 +72,11 @@ class ProfilePage extends GetWidget<ProfileController> {
     } else if (TYPE == SAVED) {
       return Get.to(() => SavePage());
     } else if (TYPE == MY_APPLICATION) {
-      return Get.to(() => ApplicationPage());
+      return Get.to(() => ApplicationPage(employee: controller.employee.value!));
     } else if (TYPE == CORPORATION) {
-      return Get.to(() => CorporationPage());
+      return Get.to(() => CorporationPage(
+            employer: controller.employer.value!,
+          ));
     }
   }
 
@@ -100,6 +103,7 @@ class ProfilePage extends GetWidget<ProfileController> {
                     return const CircularProgressIndicator();
                   }
                   if (controller.user.value!.role == "Employee") {
+                    MENU_ROLE = 'Employee';
                     controller.loadEmployeeData();
 
                     if (controller.employee.value?.id_user == null) {
@@ -122,6 +126,7 @@ class ProfilePage extends GetWidget<ProfileController> {
                     );
                   }
                   if (controller.user.value!.role == "Employer") {
+                    MENU_ROLE = 'Employer';
                     controller.loadEmployerData();
                     if (controller.employer.value?.id_user == null) {
                       return const CircularProgressIndicator();
@@ -161,6 +166,10 @@ class ProfilePage extends GetWidget<ProfileController> {
               ),
             ),
           ),
+          // MENU_ROLE != 'Employer'
+          //     ? _renderRoleEmployerMenu()
+          //     : _renderRoleEmployeeMenu()
+          
           _renderMenuFunc(MY_INFO),
           _renderMenuFunc(MY_CV),
           _renderMenuFunc(MY_APPLICATION),
@@ -170,6 +179,41 @@ class ProfilePage extends GetWidget<ProfileController> {
           _renderMenuFunc(SINGOUT),
         ],
       ),
+    );
+  }
+
+  // Widget _renderMenuFunc(TYPE) {
+  //   return SliverToBoxAdapter(
+  //     child: Column(children: [
+  //       _MenuFunc(TYPE),
+  //       const SizedBox(
+  //         height: 8,
+  //       )
+  //     ]),
+  //   );
+  // }
+  Widget _renderRoleEmployerMenu() {
+    return SliverToBoxAdapter(
+      child: Column(children: [
+        _renderMenuFunc(MY_INFO),
+        _renderMenuFunc(MY_APPLICATION),
+        _renderMenuFunc(CORPORATION),
+        _renderMenuFunc(ABOUT_APP),
+        _renderMenuFunc(SINGOUT),
+      ]),
+    );
+  }
+
+  Widget _renderRoleEmployeeMenu() {
+    return SliverToBoxAdapter(
+      child: Column(children: [
+        _renderMenuFunc(MY_INFO),
+        _renderMenuFunc(MY_CV),
+        _renderMenuFunc(MY_APPLICATION),
+        _renderMenuFunc(SAVED),
+        _renderMenuFunc(ABOUT_APP),
+        _renderMenuFunc(SINGOUT),
+      ]),
     );
   }
 

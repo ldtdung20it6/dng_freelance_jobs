@@ -18,6 +18,7 @@ class Jobs {
   final String way_to_work_id;
   final String salary_id;
   final String state;
+  final String image;
   final String deadline;
   final DateTime created_at;
   Jobs({
@@ -36,6 +37,7 @@ class Jobs {
     required this.way_to_work_id,
     required this.salary_id,
     required this.state,
+    required this.image,
     required this.deadline,
     required this.created_at,
   });
@@ -57,8 +59,9 @@ class Jobs {
       way_to_work_id: snapshot['way_to_work_id'],
       salary_id: snapshot['salary_id'],
       state: snapshot['state'],
+      image: snapshot['image'],
       deadline: snapshot['deadline'],
-      created_at: snapshot['created_at'],
+      created_at: (snapshot['created_at'] as Timestamp).toDate(),
     );
   }
 }

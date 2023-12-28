@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 
 class HomePage extends GetWidget<HomeController> {
   var controller = Get.put(HomeController());
-  var _txtSearchController = TextEditingController();
   HomePage({super.key});
 
   @override
@@ -78,19 +77,6 @@ class HomePage extends GetWidget<HomeController> {
                   return Container();
                 }),
               ),
-              Center(
-                child: Container(
-                  width: Get.width * 0.9,
-                  decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(8)),
-                  child: TextField(
-                    controller: _txtSearchController,
-                    decoration: const InputDecoration(
-                        hintText: 'Search Service', icon: Icon(Icons.search)),
-                  ),
-                ),
-              ),
               SizedBox(height: Get.height * 0.05),
               Container(
                 padding: const EdgeInsets.only(left: 20),
@@ -132,24 +118,32 @@ class HomePage extends GetWidget<HomeController> {
               Container(
                 padding: const EdgeInsets.only(left: 20),
                 height: Get.height * 0.25,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _renderJobs(
-                        'https://blog.topcv.vn/wp-content/uploads/2018/09/fpt-software.png',
-                        'https://blog.topcv.vn/wp-content/uploads/2018/09/fpt-software.png',
-                        'Team Lead .NET',
-                        'Location: Da Nang',
-                        'Up to 2000'),
-                    SizedBox(width: Get.width * 0.05),
-                    _renderJobs(
-                        'https://images.glints.com/unsafe/glints-dashboard.s3.amazonaws.com/company-logo/c8a82190abecd40ac6775c739d33253c.jpeg',
-                        'https://images.glints.com/unsafe/glints-dashboard.s3.amazonaws.com/company-logo/c8a82190abecd40ac6775c739d33253c.jpeg',
-                        'Team Lead .NODEJS',
-                        'location: Da Nang',
-                        'Up to 2000'),
-                  ],
-                ),
+                child: Obx(() {
+                  var jobsList = controller.jobsList;
+                  if (jobsList.isEmpty) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return SizedBox(
+                      width: Get.width,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: jobsList.length,
+                        itemBuilder: (context, index) {
+                          var job = jobsList[index];
+                          return _renderJobs(
+                            job.image,
+                            job.corp_id,
+                            job.job_name,
+                            job.salary_id,
+                            job
+                          );
+                        },
+                      ),
+                    );
+                  }
+                }),
               ),
             ],
           ),
@@ -158,40 +152,46 @@ class HomePage extends GetWidget<HomeController> {
     );
   }
 
-  Widget _renderJobs(urlImage, userAvatar, userName, descriptJob, priceJob) {
-    return GestureDetector(
-      onTap: () {
-        Get.to(DetailJobsPage(
-            urlImage: urlImage,
-            userAvatar: userAvatar,
-            userName: userName,
-            descriptJob: descriptJob,
-            priceJob: priceJob));
-      },
-      child: Container(
-        width: Get.width * 0.5,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.white,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: Get.width*0.3,
-              height: Get.height*0.1,
-              child: Image.network(urlImage)),
-            SizedBox(height: Get.height * 0.02),
-            Text(userName),
-            Text(descriptJob, overflow: TextOverflow.ellipsis),
-            Text(
-              "\$$priceJob",
-              style: const TextStyle(fontWeight: FontWeight.bold),
+  Widget _renderJobs(urlImage, UserName, descriptJob, priceJob,jobs) {
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () {
+            Get.to(() =>DetailJobsPage(
+              jobs: jobs,
+                // urlImage: urlImage,
+                // userName: UserName,
+                // descriptJob: descriptJob,
+                // priceJob: priceJob
+                ));
+          },
+          child: Container(
+            width: Get.width * 0.5,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
             ),
-          ],
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                    width: Get.width * 0.3,
+                    height: Get.height * 0.1,
+                    child: Image.network(urlImage)),
+                SizedBox(height: Get.height * 0.02),
+                Text(UserName),
+                Text(descriptJob, overflow: TextOverflow.ellipsis),
+                Text(
+                  "\$$priceJob",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
         ),
-      ),
+        const SizedBox(width: 20)
+      ],
     );
   }
 

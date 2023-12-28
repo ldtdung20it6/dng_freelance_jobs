@@ -5,6 +5,7 @@
 import 'package:dng_freelance_jobs/pages/profile/edit_profile/edit_profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditProfilePage extends GetWidget<EditProfileController> {
   var controller = Get.put(EditProfileController());
@@ -27,6 +28,7 @@ class EditProfilePage extends GetWidget<EditProfileController> {
   final TextEditingController _txtgenderController = TextEditingController();
   final TextEditingController _txtPhoneNumberController =
       TextEditingController();
+  final ImagePicker _picker = ImagePicker();
 
   inputController(TYPE) {
     if (TYPE == FULL_NAME) {
@@ -83,6 +85,13 @@ class EditProfilePage extends GetWidget<EditProfileController> {
       return const Icon(Icons.image);
     } else if (TYPE == EMAIL) {
       return const Icon(Icons.email);
+    }
+  }
+  void _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      String newImageUrl = pickedFile.path;
+      controller.avatarImageUrl.value = newImageUrl;
     }
   }
 
@@ -169,7 +178,7 @@ class EditProfilePage extends GetWidget<EditProfileController> {
                     controller.profileController.employee.value!.image,
                     _txtPhoneNumberController.text,
                   );
-                }else{
+                } else {
                   controller.updateInfoEmployer(
                     controller.profileController.employer.value!,
                     _txtFullNameController.text,

@@ -8,7 +8,8 @@ import 'package:get/get.dart';
 
 class EditProfileController extends GetxController {
   ProfileController profileController = Get.find();
-
+  var avatarImageUrl = ''.obs;
+  
   Future<void> updateInfoEmployee(Employee employee, String full_name,
       String gender, String image, String phone_number) async {
     var update = await EditprofileProvider()
@@ -33,4 +34,6 @@ class EditProfileController extends GetxController {
       throw (e);
     });
   }
+
+  
 }

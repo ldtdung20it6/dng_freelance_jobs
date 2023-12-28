@@ -1,8 +1,9 @@
 // ignore_for_file: must_be_immutable
 import 'package:dng_freelance_jobs/pages/dash_board/dash_board_controller.dart';
 import 'package:dng_freelance_jobs/pages/home/home_page.dart';
-import 'package:dng_freelance_jobs/pages/inbox/inbox_page.dart';
-import 'package:dng_freelance_jobs/pages/manage_oders/manage_oders_page.dart';
+import 'package:dng_freelance_jobs/pages/profile/application/application_page.dart';
+import 'package:dng_freelance_jobs/pages/profile/corporation/create_and_edit_job/create_and_edit_job_page.dart';
+import 'package:dng_freelance_jobs/pages/profile/cv/cv_page.dart';
 import 'package:dng_freelance_jobs/pages/profile/profile_page.dart';
 import 'package:dng_freelance_jobs/pages/search/search_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,9 +26,31 @@ class DashBoardPage extends GetWidget<DashboardController> {
                 index: controller.tabIndex,
                 children: [
                   HomePage(),
-                  InboxPage(),
+                  Obx(() {
+                    if(controller.profileController.user.value?.role == null){
+                      return const CircularProgressIndicator();
+                    }
+                    if(controller.profileController.user.value!.role == "Employee"){
+                      return CVPage(employee: controller.profileController.employee.value!,);
+                    }
+                    if(controller.profileController.user.value!.role == "Employer"){
+                      return CreateAndEditJobPage(employer: controller.profileController.employer.value!,);
+                    }
+                    return Container();
+                  }),
                   SearchPage(),
-                  ManageOdersPage(),
+                  Obx(() {
+                    if(controller.profileController.user.value?.role == null){
+                      return const CircularProgressIndicator();
+                    }
+                    if(controller.profileController.user.value!.role == "Employee"){
+                      return ApplicationPage(employee: controller.profileController.employee.value!,);
+                    }
+                    if(controller.profileController.user.value!.role == "Employer"){
+                      return CreateAndEditJobPage(employer: controller.profileController.employer.value!,);
+                    }
+                    return Container();
+                  }),
                   ProfilePage()
                 ],
               ),
@@ -45,7 +68,7 @@ class DashBoardPage extends GetWidget<DashboardController> {
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(CupertinoIcons.mail),
-                  label: 'Inbox',
+                  label: 'CV',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(CupertinoIcons.search),

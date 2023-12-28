@@ -28,7 +28,7 @@ class CV {
       id_user: snapshot['id_user'],
       career_id: snapshot['career_id'],
       exp_id: snapshot['exp_id'],
-      created_at: snapshot['created_at'],
+      created_at: (snapshot['created_at'] as Timestamp).toDate()
     );
   }
 }

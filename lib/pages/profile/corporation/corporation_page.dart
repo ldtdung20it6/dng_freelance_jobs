@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:dng_freelance_jobs/models/employer.dart';
 import 'package:dng_freelance_jobs/pages/profile/corporation/corporation_controller.dart';
 import 'package:dng_freelance_jobs/pages/profile/corporation/create_and_edit_job/create_and_edit_job_page.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,8 @@ import 'package:get/get.dart';
 
 class CorporationPage extends GetWidget<CorporationController> {
   var controller = Get.put(CorporationController());
-  CorporationPage({super.key});
+  final Employer employer;
+  CorporationPage({super.key,required this.employer});
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +85,7 @@ class CorporationPage extends GetWidget<CorporationController> {
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Get.to(() => CreateAndEditJobPage());
+            Get.to(() => CreateAndEditJobPage(employer: employer,));
           }, 
           backgroundColor: const Color.fromRGBO(143, 148, 251, 1),
           child: const Icon(Icons.add),
